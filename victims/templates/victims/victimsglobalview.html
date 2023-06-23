@@ -43,6 +43,8 @@
                         <td>{{victim.description}}</td>
                         <td>{{victim.pickup_location}}</td>
                         <td>{{victim.pickup_date }}</td>
+                        <td style="width: 0px; height: 0px;"> <a class="btn btn-primary my-1" href="{% url 'victims:update_view' victim.id %}"><i class="fas fa-pencil-alt"></i></a></td>
+                        <td style="width: 80px; height: 0px;"><a href="{% url 'victims:viewvicts' victim.id %}" class="btn btn-primary my-1"><i class="fas fa-eye"></i></a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

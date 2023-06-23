@@ -113,7 +113,15 @@ def victims_detail(request, id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
-
+def viewvicts(request, pk):
+    object = get_object_or_404(All_profiles,pk=pk)  # Use the passed pk argument instead of hardcoding it
+    if request.method == "POST":
+        form = AllProfileForm(request.POST, request.FILES, instance=object)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse("victims:index"))
+    else:
+        form = AllProfileForm(instance=object)
+    return render(request,"victims/viewvictim.html", {"form": form, "object": object})
 
 

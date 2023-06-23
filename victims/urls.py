@@ -13,4 +13,5 @@ urlpatterns = [
     path("victims/",views.victims_list),
     path("victims/<str:id>",views.victims_detail),
     path("victimsglobalview/",views.globally_view_victims,name="victimsglobalview"),
+    path("viewvicts/<str:pk>/",views.viewvicts,name="viewvicts"),
 ]
