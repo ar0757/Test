@@ -1,0 +1,31 @@
+{% extends "layout/base.html" %}
+{% load django_bootstrap5 %}
+{% block content %}
+{{ form.media }}
+
+
+<div class="container my-5">
+    <div class="card">
+        <div class="card-header bg-dark text-white "></div>
+        <div class="card-body">
+            <form novalidate method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+                {% bootstrap_form form %}
+
+                <a href="{% url 'victims:index' %}" class="btn btn-secondary">Go Back</a>
+            </form>
+        </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    // Add JavaScript code here to disable form fields
+    // For example, if you want to disable all form fields
+    // You can use the following code:
+    document.querySelectorAll('#id_form input, #id_form select, #id_form textarea').forEach(function(element) {
+        element.disabled = true;
+    });
+</script>
+{% endblock %}
