@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'rest_framework',
     'home',
+    'hospital',
 ]
 
 MIDDLEWARE = [
