@@ -12,7 +12,11 @@
 
                 {% csrf_token %}
                 {% bootstrap_form form %}
-
+                <div class="form-group">
+                    <label for="{{ form.images.id_for_label }}">Images:</label>
+                    {{ form.images }}
+                </div>
+                
                 <input class="btn btn-primary mt-4" type="submit" value="Submit">
             </form>
         </div>
