@@ -1,11 +1,19 @@
 from django.contrib import admin
-from django.contrib import admin
-from .models import All_profiles
+from .models import All_profiles, Image
 
-admin.site.site_header = "Kaval Karengal Dashboard"
-admin.site.index_title = "Prakash"
-class All_profile(admin.ModelAdmin):
-    list_display = ['memo_no','pickup_location'] #Empadmin is a superclass present in django.contrib in admin folder that allows for editing display
+class ImageInline(admin.TabularInline):
+    model = Image
+    extra = 1
+
+class AllProfileAdmin(admin.ModelAdmin):
+    inlines = [ImageInline]
+
     readonly_fields = ('imgpreview',)
-    #list_filter = ['zone']
-admin.site.register(All_profiles,All_profile)  #second parameter is legit the customization of table that will show in the admin page
+
+    def imgpreview(self, obj):
+        return obj.imgpreview()
+
+    imgpreview.short_description = 'Image Preview'
+    imgpreview.allow_tags = True
+
+admin.site.register(All_profiles, AllProfileAdmin)

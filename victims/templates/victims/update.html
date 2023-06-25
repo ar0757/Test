@@ -13,11 +13,23 @@
                 {% csrf_token %}
                 {% bootstrap_form form %}
 
+                <!-- Display existing images -->
+                {% if images %}
+                <div class="mt-4">
+                    <h5>Existing Images:</h5>
+                    {% for image in images %}
+                        <img src="{{ image.image.url }}" class="img-thumbnail" width="200" height="200">
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <!-- Allow uploading additional images -->
+                <!--<div class="mt-4">
+                    <h5>Upload Additional Images:</h5>
+                    {{ form.images }}
+                </div>-->
                 <input class="btn btn-primary mt-4" type="submit" value="Submit">
             </form>
         </div>
-        </div>
     </div>
-
 </div>
 {% endblock %}

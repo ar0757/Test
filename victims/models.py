@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.html import mark_safe
 import shortuuid
 from home.models import home_profiles
+from django.contrib import admin
 # Create your models here.
 class All_profiles(models.Model):
     GENDER_LISTS=(
@@ -21,7 +22,7 @@ class All_profiles(models.Model):
     description = models.CharField(max_length=1000)
     pickup_location = models.CharField(max_length=1000)
     pickup_date = models.DateTimeField()
-    Image = models.ImageField(upload_to="victims/images",default="")
+    images = models.ManyToManyField('Image', related_name='victims')
 
     class Meta:
         verbose_name = "All Profile"
@@ -29,5 +30,14 @@ class All_profiles(models.Model):
     def __str__(self):
         return f"{self.memo_no},{self.pickup_location}"
 
-    def imgpreview(self):
-        return mark_safe(f'<img src = "{self.Image.url}" width = "300"/>')
+class Image(models.Model):
+    all_profile = models.ForeignKey(All_profiles, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="victims/images")
+
+    def __str__(self):
+        return self.image.name
+
+
+class ImageInline(admin.TabularInline):
+    model = Image
+    extra = 1

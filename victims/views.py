@@ -13,11 +13,11 @@ from datetime import datetime,timedelta
 def addvictim(request):
     form = AllProfileForm()
     if request.method == "POST":
-        form = AllProfileForm(request.POST,request.FILES)
+        form = AllProfileForm(request.POST, request.FILES)  # Add request.FILES parameter
         if form.is_valid():
             form.save()
             return redirect(reverse("victims:index"))
-    return render(request,"victims/add.html",{"form":form})
+    return render(request, "victims/add.html", {"form": form})
 
 def index(request):
     victims = All_profiles.objects.all().order_by('-id') 
@@ -28,15 +28,20 @@ def index(request):
     return render(request,"victims/index.html",{"victims":victims,'victims_per_page':victims_per_page,'nums': nums})
 
 def update_view(request, pk):
-    object = get_object_or_404(All_profiles,pk=pk)  # Use the passed pk argument instead of hardcoding it
+    obj = get_object_or_404(All_profiles, pk=pk)
+
     if request.method == "POST":
-        form = AllProfileForm(request.POST, request.FILES, instance=object)
+        form = AllProfileForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
             return redirect(reverse("victims:index"))
     else:
-        form = AllProfileForm(instance=object)
-    return render(request,"victims/update.html", {"form": form, "object": object})
+        form = AllProfileForm(instance=obj)
+
+    # Get the images associated with the object
+    images = obj.image_set.all()
+
+    return render(request, "victims/update.html", {"form": form, "object": obj, "images": images})
 
 def globally_view_victims(request):
     chk = request.GET.get('search')
@@ -114,14 +119,8 @@ def victims_detail(request, id):
 
 
 def viewvicts(request, pk):
-    object = get_object_or_404(All_profiles,pk=pk)  # Use the passed pk argument instead of hardcoding it
-    if request.method == "POST":
-        form = AllProfileForm(request.POST, request.FILES, instance=object)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse("victims:index"))
-    else:
-        form = AllProfileForm(instance=object)
-    return render(request,"victims/viewvictim.html", {"form": form, "object": object})
+    obj = get_object_or_404(All_profiles, pk=pk)
+    images = obj.image_set.all()
+    return render(request, "victims/viewvictim.html", {"object": obj, "images": images})
 
 
