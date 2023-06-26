@@ -1,5 +1,8 @@
 from django.db import models
 import shortuuid
+from timeline.models import TimelineEvent
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -15,3 +18,15 @@ class hospital_profiles(models.Model):
 
     def __str__(self):
         return f"{self.hospital_name},{self.hospital_address},{self.phone_number}"
+    
+    def create_timeline_event(self):
+        title = f"New hospital added: {self.hospital_name}"
+        description = f"Address: {self.hospital_address}"
+        event = TimelineEvent.objects.create(title=title, description=description)
+    
+    def save(self, *args, **kwargs):
+        created = not self.pk
+        super().save(*args, **kwargs)
+        if created:
+            self.create_timeline_event()
+
