@@ -3,6 +3,11 @@ from django.utils.html import mark_safe
 import shortuuid
 from home.models import home_profiles
 from django.contrib import admin
+from timeline.models import TimelineEvent
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+
 # Create your models here.
 class All_profiles(models.Model):
     GENDER_LISTS=(
@@ -29,6 +34,18 @@ class All_profiles(models.Model):
 
     def __str__(self):
         return f"{self.memo_no},{self.pickup_location}"
+    
+    def create_timeline_event(self):
+        title = f"New victim added: {self.id}"
+        descriptionn = f"Description: {self.description}\n"
+        descriptionn += f"Pickup Date: {self.pickup_date}"
+        event = TimelineEvent.objects.create(title=title, description=descriptionn)
+
+    def save(self, *args, **kwargs):
+        created = not self.pk
+        super().save(*args, **kwargs)
+        if created:
+            self.create_timeline_event()
 
 class Image(models.Model):
     all_profile = models.ForeignKey(All_profiles, on_delete=models.CASCADE)
@@ -41,3 +58,8 @@ class Image(models.Model):
 class ImageInline(admin.TabularInline):
     model = Image
     extra = 1
+
+@receiver(post_save, sender=All_profiles)
+def create_All_profiles_timeline_event(sender, instance, created, **kwargs):
+    if created:
+        instance.create_timeline_event()
