@@ -7,5 +7,6 @@ app_name = "home"
 urlpatterns = [
     path("add", addhome, name="add"),
     path("index/", index, name="index"),
-    path("update/<str:pk>/", update_view, name="update_view")
+    path("update/<str:pk>/", update_view, name="update_view"),
+    path("remove/<str:pk>/", views.remove_home, name="remove_home"),
 ]

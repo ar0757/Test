@@ -8,5 +8,5 @@ urlpatterns = [
     path("add",addvolunteer,name="add"),
     path("index/",index,name="index"),
     path("update/<str:pk>/",update_view,name="update_view"),
-    #path('update/<int:pk>/',views.update_view, name='update_view')
+    path("remove/<str:pk>/",views.remove_volunteer,name="remove"),
 ]

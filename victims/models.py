@@ -62,4 +62,11 @@ class ImageInline(admin.TabularInline):
 @receiver(post_save, sender=All_profiles)
 def create_All_profiles_timeline_event(sender, instance, created, **kwargs):
     if created:
-        instance.create_timeline_event()
+        instance.create_timeline_event()    
+
+def protect_home_profiles_delete(sender, instance, **kwargs):
+    if All_profiles.objects.filter(ngo_assigned=instance.home_name).exists():
+        raise models.ProtectedError(
+            "Cannot delete home_profiles object as it is referenced by All_profiles instances.",
+            instance=instance,
+        )

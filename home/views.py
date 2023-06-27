@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .forms import home_profiles, homeform
-from .models import home_profiles
+from .models import home_profiles,TimelineEvent
 from django.core.paginator import Paginator
 from django.db.models import Q
 
@@ -43,3 +43,11 @@ def update_view(request,pk):
     else:
         form = homeform(instance=object)
     return render(request,"home/update.html", {"form": form, "object": object})
+
+def remove_home(request, pk):
+    homes = get_object_or_404(home_profiles, pk=pk)
+    title = f"Home deleted: {homes.home_name}"
+    description = f"Home Address: {homes.home_address} \n Contact Person: {homes.contact_person} \n Phone No: {homes.phone_number}"
+    TimelineEvent.objects.create(title=title, description=description)
+    homes.delete()
+    return redirect(reverse("home:index"))
