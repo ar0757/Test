@@ -40,6 +40,11 @@
                         <td>{{home.category}}</td>
                         <td>{{home.beds}}</td>
                         <td><a class="btn btn-primary my-1" href="{% url 'home:update_view' home.id %}">Edit Profile</a></td>
+                        <td>
+                            <a class="btn btn-danger my-1" href="{% url 'home:remove_home' home.id %}" onclick="return confirm('Are you sure you want to remove this volunteer?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

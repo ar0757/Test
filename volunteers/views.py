@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .forms import volunteer_profiles, volunteerform
-from .models import volunteer_profiles
+from .models import volunteer_profiles,TimelineEvent
 from django.core.paginator import Paginator
 from django.db.models import Q
 
@@ -53,8 +53,11 @@ def update_view(request,pk):
         form = volunteerform(instance=object)
     return render(request,"volunteers/update.html", {"form": form, "object": object})
 
-'''def globally_view_volunteers(request):
-    q = Paginator(volunteers,10)
-    page = request.GET.get('page')
-    vols = q.get_page(page)
-    return render(request,"volunteers/volunteersglobalview.html",{"volunteers":volunteers,'vols':vols})'''
+
+def remove_volunteer(request, pk):
+    volunteer = get_object_or_404(volunteer_profiles, pk=pk)
+    title = f"Volunteer removed: {volunteer.first_name} {volunteer.last_name}"
+    description = f"Phone No: {volunteer.phone_number}"
+    TimelineEvent.objects.create(title=title, description=description)
+    volunteer.delete()
+    return redirect(reverse("volunteers:index"))
