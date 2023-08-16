@@ -6,7 +6,7 @@ from home.models import home_profiles
 
 class AllProfileForm(forms.ModelForm):
     pickup_date = forms.DateField(widget=DatePickerInput())
-    images = MultiFileField(min_num=1, max_num=30, max_file_size=1024*1024*5)  # Adjust the limits as per your requirements
+    images = MultiFileField(min_num=1, max_num=30, max_file_size=1024*1024*5)
 
     class Meta:
         model = All_profiles
@@ -14,7 +14,10 @@ class AllProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['ngo_assigned'].choices = self.get_home_choices()
+
+        # If the instance is not provided, the form is in create mode
+        if not self.instance.pk:
+            self.fields['ngo_assigned'].choices = self.get_home_choices()
 
     def get_home_choices(self):
         return [(home.home_name, home.home_name) for home in home_profiles.objects.all()]
@@ -24,7 +27,6 @@ class AllProfileForm(forms.ModelForm):
         if commit:
             instance.save()
 
-        # Save the uploaded images
         for image in self.cleaned_data['images']:
             Image.objects.create(all_profile=instance, image=image)
 
