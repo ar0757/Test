@@ -3,24 +3,45 @@
 
 {% block content %}
 <br>
-    <div class="container">
-        <h2>Global Timeline</h2>
-        <div class="card">
-            <div class="card-body" style="overflow-y: scroll; max-height: 400px;">
-                {% if events %}
-                    {% for event in events %}
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h3 class="card-title">{{ event.title }}</h3>
-                                <p class="card-text">{{ event.description }}</p>
-                                <p class="card-text"><small class="text-muted">{{ event.date }}</small></p>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="GET" action="{% url 'timeline:global_timeline' %}">
+                <div class="input-group">
+                    <input type="text" name="q" placeholder="Search..." value="{{ query }}" class="form-control">
+                    <div class="input-group-append">
+                        <input type="date" name="date" class="form-control">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="text-center">Global Timeline</h2>
+            <div class="card">
+                <div class="card-body" style="overflow-y: scroll; max-height: 400px;">
+                    {% if events %}
+                        {% for event in events %}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h3 class="card-title">{{ event.title }}</h3>
+                                    <p class="card-text">{{ event.description }}</p>
+                                    <p class="card-text"><small class="text-muted">{{ event.date }}</small></p>
+                                </div>  
                             </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>No events found.</p>
-                {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p>No events found.</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
