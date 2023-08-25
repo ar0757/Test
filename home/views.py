@@ -3,7 +3,9 @@ from .forms import home_profiles, homeform
 from .models import home_profiles,TimelineEvent
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def addhome(request):
     form = homeform()
     if request.method == "POST":
@@ -13,6 +15,7 @@ def addhome(request):
             return redirect(reverse("home:index"))
     return render(request,"home/add.html",{"form":form})
 
+@login_required
 def index(request):
     chk = request.GET.get('search')
     homes = home_profiles.objects.all().order_by('-id')
@@ -33,6 +36,7 @@ def index(request):
     vols = q.get_page(page)
     return render(request,"home/index.html",{"homes":homes,'vols':vols})
 
+@login_required
 def update_view(request,pk):
     object = get_object_or_404(home_profiles,pk=pk)  # Use the passed pk argument instead of hardcoding it
     if request.method == "POST":
@@ -44,6 +48,7 @@ def update_view(request,pk):
         form = homeform(instance=object)
     return render(request,"home/update.html", {"form": form, "object": object})
 
+@login_required
 def remove_home(request, pk):
     homes = get_object_or_404(home_profiles, pk=pk)
     title = f"Home deleted: {homes.home_name}"

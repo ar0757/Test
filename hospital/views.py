@@ -3,7 +3,9 @@ from .forms import hospital_profiles, hospitalform
 from .models import hospital_profiles
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def addhospital(request):
 
     form = hospitalform()
@@ -14,6 +16,7 @@ def addhospital(request):
             return redirect(reverse("hospital:index"))
     return render(request,"hospital/add.html",{"form":form})
 
+@login_required
 def index(request):
     chk = request.GET.get('search')
     hospitals = hospital_profiles.objects.all().order_by('-id')
@@ -32,6 +35,7 @@ def index(request):
     vols = q.get_page(page)
     return render(request,"hospital/index.html",{"hospitals":hospitals,'vols':vols})
 
+@login_required
 def update_view(request,pk):
     object = get_object_or_404(hospital_profiles,pk=pk)  # Use the passed pk argument instead of hardcoding it
     if request.method == "POST":
