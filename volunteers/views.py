@@ -3,7 +3,9 @@ from .forms import volunteer_profiles, volunteerform
 from .models import volunteer_profiles,TimelineEvent
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def addvolunteer(request):
 
     form = volunteerform()
@@ -14,6 +16,7 @@ def addvolunteer(request):
             return redirect(reverse("volunteers:index"))
     return render(request,"volunteers/add.html",{"form":form})
 
+@login_required
 def index(request):
     chk = request.GET.get('search')
     volunteers = volunteer_profiles.objects.all().order_by('-id')
@@ -42,6 +45,7 @@ def index(request):
     vols = q.get_page(page)
     return render(request,"volunteers/index.html",{"volunteers":volunteers,'vols':vols})
 
+@login_required
 def update_view(request,pk):
     object = get_object_or_404(volunteer_profiles,pk=pk)  # Use the passed pk argument instead of hardcoding it
     if request.method == "POST":
@@ -53,7 +57,7 @@ def update_view(request,pk):
         form = volunteerform(instance=object)
     return render(request,"volunteers/update.html", {"form": form, "object": object})
 
-
+@login_required
 def remove_volunteer(request, pk):
     volunteer = get_object_or_404(volunteer_profiles, pk=pk)
     title = f"Volunteer removed: {volunteer.first_name} {volunteer.last_name}"

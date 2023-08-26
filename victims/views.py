@@ -9,7 +9,9 @@ from rest_framework import status
 from django.core.paginator import Paginator
 from django.db.models import Q
 from datetime import datetime,timedelta
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def addvictim(request):
     form = AllProfileForm()
     if request.method == "POST":
@@ -19,6 +21,7 @@ def addvictim(request):
             return redirect(reverse("victims:index"))
     return render(request, "victims/add.html", {"form": form})
 
+@login_required
 def index(request):
     victims = All_profiles.objects.all().order_by('-id') 
     p = Paginator(All_profiles.objects.all(),10)
@@ -27,6 +30,7 @@ def index(request):
     nums = "a" * victims_per_page.paginator.num_pages
     return render(request,"victims/index.html",{"victims":victims,'victims_per_page':victims_per_page,'nums': nums})
 
+@login_required
 def update_view(request, pk):
     obj = get_object_or_404(All_profiles, pk=pk)
 
@@ -43,6 +47,7 @@ def update_view(request, pk):
 
     return render(request, "victims/update.html", {"form": form, "object": obj, "images": images})
 
+@login_required
 def globally_view_victims(request):
     chk = request.GET.get('search')
     victims = All_profiles.objects.all().order_by('-id')
@@ -117,7 +122,7 @@ def victims_detail(request, id):
         victims.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+@login_required
 def viewvicts(request, pk):
     obj = get_object_or_404(All_profiles, pk=pk)
     images = obj.image_set.all()

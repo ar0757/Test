@@ -3,6 +3,8 @@ from django.db.models import Q
 # Create your views here.
 from django.shortcuts import render
 from .models import TimelineEvent
+from django.contrib.auth.decorators import login_required
+
 
 def global_timeline(request):
     query = request.GET.get('q')
