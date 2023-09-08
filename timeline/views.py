@@ -5,7 +5,7 @@ from django.shortcuts import render
 from .models import TimelineEvent
 from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def global_timeline(request):
     query = request.GET.get('q')
     date = request.GET.get('date')
