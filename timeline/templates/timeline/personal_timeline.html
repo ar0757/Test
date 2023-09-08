@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form method="GET" action="{% url 'timeline:global_timeline' %}">
+            <form method="GET" action="{% url 'timeline:personal_timeline' %}">
                 <div class="input-group">
                     <input type="text" name="q" placeholder="Search..." value="{{ query }}" class="form-control">
                     <div class="input-group-append">
@@ -23,7 +23,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h2 class="text-center">Global Timeline</h2>
+            <h2 class="text-center">My Timeline</h2>
             <div class="card">
                 <div class="card-body" style="overflow-y: scroll; max-height: 400px;">
                     {% if events %}
