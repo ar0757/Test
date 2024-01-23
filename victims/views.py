@@ -10,6 +10,10 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from datetime import datetime,timedelta
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 
 @login_required
 def addvictim(request):
@@ -127,5 +131,17 @@ def viewvicts(request, pk):
     obj = get_object_or_404(All_profiles, pk=pk)
     images = obj.image_set.all()
     return render(request, "victims/viewvictim.html", {"object": obj, "images": images})
+
+@login_required
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_victim_details(request, victim_id):
+    try:
+        victim = All_profiles.objects.get(id=victim_id)
+        serializer = All_profilesSerializers(victim)
+        return Response(serializer.data)
+    except All_profiles.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)       
 
 
