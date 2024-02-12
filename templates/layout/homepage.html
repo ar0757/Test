@@ -58,6 +58,38 @@
           </div>
           </div>
         </div>
+        <div class="col" style="margin-top: 50px;">
+          <div class="card" style="width: 18rem;">
+            <img src="/media/timeline_tree.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Personal Timeline</h5>
+              <p class="card-text"> View Your Recent Changes </p>
+              <a href="timeline/personal" class="btn btn-primary">View Timeline</a>
+            </div>
+            </div>
+          </div>
         </div>
     </div>
+    <div id="timelineContent"></div>
+    <script>
+      $(document).ready(function() {
+          // Attach a click event to the "View Timeline" button
+          $('#viewTimelineBtn').on('click', function(e) {
+              e.preventDefault(); // Prevent the default link behavior
+  
+              // Make an AJAX request to fetch and load the personal timeline content
+              $.ajax({
+                  url: "{% url 'timeline:personal_timeline' %}",
+                  method: 'GET',
+                  success: function(data) {
+                      // Replace the content of a target element with the fetched data
+                      $('#timelineContent').html(data);
+                  },
+                  error: function(error) {
+                      console.error('Error:', error);
+                  }
+              });
+          });
+      });
+  </script>
 {% endblock %}
