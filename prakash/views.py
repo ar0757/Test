@@ -7,6 +7,6 @@ def index(request):
     return render(request, 'index.html')
 
 @login_required(login_url='')
-def homepage(request):
-    return render(request,'layout/homepage.html')
+def  homepage(request):
+    return render(request,'layout/homepage.html',{'user':request.user})
 # Create your views here.

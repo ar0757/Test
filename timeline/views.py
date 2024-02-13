@@ -5,8 +5,11 @@ from django.shortcuts import render
 from .models import TimelineEvent
 from django.contrib.auth.decorators import login_required
 
+
 @login_required
 def global_timeline(request):
+    if not request.user.is_superuser:
+        return render(request, 'timeline/access_denied.html')
     query = request.GET.get('q')
     date = request.GET.get('date')
 
