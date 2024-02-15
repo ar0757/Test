@@ -3,7 +3,7 @@ import shortuuid
 from timeline.models import TimelineEvent
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.contrib.auth.models import User
 # Create your models here.
 class volunteer_profiles(models.Model):
     GENDER_LISTS=(
@@ -19,6 +19,7 @@ class volunteer_profiles(models.Model):
     phone_number = models.IntegerField(default=0)
     ngo_association = models.CharField(max_length=100)
     area_of_operation = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = "Volunteer Profile"
@@ -29,7 +30,7 @@ class volunteer_profiles(models.Model):
     def create_timeline_event(self):
         title = f"New Volunteer added: {self.first_name} {self.last_name}"
         description = f"Phone No: {self.phone_number}\n"
-        event = TimelineEvent.objects.create(title=title, description=description)
+        event = TimelineEvent.objects.create(title=title, description=description,user = self.user)
     
     def save(self, *args, **kwargs):
         created = not self.pk

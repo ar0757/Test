@@ -12,7 +12,9 @@ def addhospital(request):
     if request.method == "POST":
         form = hospitalform(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
+            hospital = form.save(commit=False)
+            hospital.user = request.user
+            hospital.save()
             return redirect(reverse("hospital:index"))
     return render(request,"hospital/add.html",{"form":form})
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .forms import AllProfileForm
-from .models import All_profiles
+from .models import All_profiles,TimelineEvent
 from django.http import JsonResponse
 from .serializers import All_profilesSerializers
 from rest_framework.decorators import api_view
@@ -15,13 +15,18 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
+
 @login_required
 def addvictim(request):
     form = AllProfileForm()
     if request.method == "POST":
         form = AllProfileForm(request.POST, request.FILES)  # Add request.FILES parameter
         if form.is_valid():
-            form.save()
+            new_victim = form.save()
+            title = f"New victim added: {new_victim.id}"
+            descriptionn = f"Description: {new_victim.description}\n"
+            descriptionn += f"Pickup Date: {new_victim.pickup_date}"
+            TimelineEvent.objects.create(title=title, description=descriptionn, user=request.user)
             return redirect(reverse("victims:index"))
     return render(request, "victims/add.html", {"form": form})
 

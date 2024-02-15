@@ -12,7 +12,9 @@ def addvolunteer(request):
     if request.method == "POST":
         form = volunteerform(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
+            volunteer = form.save(commit=False)
+            volunteer.user = request.user
+            volunteer.save()
             return redirect(reverse("volunteers:index"))
     return render(request,"volunteers/add.html",{"form":form})
 
