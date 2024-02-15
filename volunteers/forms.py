@@ -7,7 +7,7 @@ class volunteerform(forms.ModelForm):
     #pickup_date = forms.DateField(widget=DatePickerInput())
     class Meta:
         model = volunteer_profiles
-        fields = "__all__"
+        exclude = ['user']
         #forms.fields['pickup_date'] = DateTimePickerInput(attrs={'type':'datetime-local'})
         # exclude = ('pickup_date','gender')
         # fields = ('memo_no','first_name')

@@ -11,7 +11,11 @@ def addhome(request):
     if request.method == "POST":
         form = homeform(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
+            new_home = form.save()
+
+            title = f"New home added: {new_home.home_name}"
+            description = f"Address: {new_home.home_address}"
+            TimelineEvent.objects.create(title=title, description=description, user=request.user)
             return redirect(reverse("home:index"))
     return render(request,"home/add.html",{"form":form})
 
@@ -53,6 +57,6 @@ def remove_home(request, pk):
     homes = get_object_or_404(home_profiles, pk=pk)
     title = f"Home deleted: {homes.home_name}"
     description = f"Home Address: {homes.home_address} \n Contact Person: {homes.contact_person} \n Phone No: {homes.phone_number}"
-    TimelineEvent.objects.create(title=title, description=description)
+    TimelineEvent.objects.create(title=title, description=description, user = request.user)
     homes.delete()
     return redirect(reverse("home:index"))
