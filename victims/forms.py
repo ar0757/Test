@@ -1,6 +1,6 @@
 from django import forms
 from multiupload.fields import MultiFileField
-from .models import All_profiles, Image
+from .models import All_profiles, Image, VictimLifecycleEntry
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 from home.models import home_profiles
 
@@ -31,3 +31,8 @@ class AllProfileForm(forms.ModelForm):
             Image.objects.create(all_profile=instance, image=image)
 
         return instance
+
+class VictimLifecycleEntryForm(forms.ModelForm):
+    class Meta:
+        model = VictimLifecycleEntry
+        fields = ['entry_text', 'attachment']

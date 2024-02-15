@@ -15,5 +15,5 @@ urlpatterns = [
     path("victimsglobalview/",views.globally_view_victims,name="victimsglobalview"),
     path("viewvicts/<str:pk>/",views.viewvicts,name="viewvicts"),
     path('get_victim_details/<str:victim_id>/', get_victim_details, name='get_victim_details'),
-
+    path('victim_lifecycle_entry/<str:pk>/', views.victim_lifecycle_entry_view, name='victim_lifecycle_entry'),
 ]

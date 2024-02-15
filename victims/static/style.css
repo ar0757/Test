@@ -1,0 +1,42 @@
+
+.lifecycle-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.entry-form {
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background-color: #3498db; /* Blue color */
+    color: #fff; /* White text */
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+.entry {
+    margin-bottom: 20px;
+}
+
+.entry-date {
+    font-size: 14px;
+    color: #777;
+}
+
+.entry-text {
+    margin-bottom: 10px;
+}
+
+.attachment-link {
+    color: #3498db; /* Blue color for attachment link */
+}
+
+.attachment-link:hover {
+    text-decoration: underline;
+}
