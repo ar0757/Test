@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .forms import AllProfileForm
-from .models import All_profiles,TimelineEvent
+from .forms import AllProfileForm, VictimLifecycleEntryForm
+from .models import All_profiles,TimelineEvent,VictimLifecycleEntry
 from django.http import JsonResponse
 from .serializers import All_profilesSerializers
 from rest_framework.decorators import api_view
@@ -148,5 +148,22 @@ def get_victim_details(request, victim_id):
         return Response(serializer.data)
     except All_profiles.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)       
+
+@login_required 
+def victim_lifecycle_entry_view(request, pk):
+    victim = get_object_or_404(All_profiles, pk=pk)
+    entries = VictimLifecycleEntry.objects.filter(victim=victim).order_by('-entry_date')
+
+    if request.method == 'POST':
+        form = VictimLifecycleEntryForm(request.POST, request.FILES)
+        if form.is_valid():
+            entry = form.save(commit=False)
+            entry.victim = victim
+            entry.save()
+            return redirect('victims:victim_lifecycle_entry', pk=pk)
+    else:
+        form = VictimLifecycleEntryForm()
+
+    return render(request, 'victims/victim_lifecycle_entry.html', {'victim': victim, 'entries': entries, 'form': form})
 
 

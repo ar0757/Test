@@ -1,0 +1,30 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'victims/styles.css' %}">
+<div class="lifecycle-container">
+    <h2>{{ victim.first_name }} {{ victim.last_name }}'s Lifecycle Entries</h2>
+
+    <form method="post" enctype="multipart/form-data" class="entry-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Add Entry</button>
+    </form>
+
+    <hr>
+
+    {% for entry in entries %}
+        <div class="entry">
+            <p class="entry-date">{{ entry.entry_date }}</p>
+            <p class="entry-text">{{ entry.entry_text }}</p>
+            {% if entry.attachment %}
+                <a href="{{ entry.attachment.url }}" target="_blank" class="attachment-link">View Attachment</a>
+            {% endif %}
+            <!-- Add more details or actions as needed -->
+        </div>
+        <hr>
+    {% endfor %}
+</div>
+{% endblock %}
+
+

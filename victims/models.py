@@ -59,6 +59,15 @@ class ImageInline(admin.TabularInline):
     model = Image
     extra = 1
 
+class VictimLifecycleEntry(models.Model):
+    victim = models.ForeignKey(All_profiles, on_delete=models.CASCADE)
+    entry_text = models.TextField()
+    attachment = models.FileField(upload_to='attachments/', null=True, blank=True)
+    entry_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.victim} - {self.entry_date}'
+
 @receiver(post_save, sender=All_profiles)
 def create_All_profiles_timeline_event(sender, instance, created, **kwargs):
     if created:
