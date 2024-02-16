@@ -48,7 +48,10 @@
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
-                        <td> <a class="btn btn-primary my-1" href="{% url 'volunteers:add' %}">Send Alert</a></td>
+                        <td>
+                            <!--<a class="btn btn-primary my-1" href="{% url 'volunteers:add' %}">Send Alert</a> -->
+                            <button class="btn btn-primary" onclick="goToVolunteer('{{ volunteers.id }}', this)">Send Alert</button>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -97,4 +100,33 @@
 {% endif %}
 </ul>
 </nav>
+
+<script>
+    function goToVolunteer(victimId, button) {
+        const authToken = '1048c555098c6f0000b114209a77fc3af853cd0b';
+
+        // Change button text and style
+        $(button).text('Sent to Volunteer').removeClass('btn-primary').addClass('btn-success');
+
+        // Set a timeout to revert the button text and style after 3.5 seconds
+        setTimeout(() => {
+            $(button).text('Go to Volunteer').removeClass('btn-success').addClass('btn-primary');
+        }, 3500);
+
+        // Make API call with the victim ID
+        fetch(`/victims/get_victim_details/${victimId}/`, {
+            headers: {
+                'Authorization': `Token ${authToken}`,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('API Response:', data);
+            // Handle the API response data
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
 {% endblock %}
